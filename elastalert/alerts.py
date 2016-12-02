@@ -86,7 +86,8 @@ class BasicMatchString(object):
     def _add_top_counts(self):
         for key, counts in list(self.match.items()):
             if key.startswith('top_events_'):
-                self.text += '%s:\n' % (key[11:])
+                self.text += '%s: count' % (key[11:])
+                self.text += '\n----------------------------------------\n'
                 top_events = list(counts.items())
 
                 if not top_events:
@@ -102,7 +103,7 @@ class BasicMatchString(object):
         match_items = list(self.match.items())
         match_items.sort(key=lambda x: x[0])
         for key, value in match_items:
-            if key.startswith('top_events_'):
+            if key.startswith('top_events_') or key == '_id' or key == '_index' or key == '_type' or key == '@timestamp':
                 continue
             value_str = str(value)
             if type(value) in [list, dict]:

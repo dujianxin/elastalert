@@ -240,7 +240,7 @@ class FrequencyRule(RuleType):
         match_ts = lookup_es_key(match, self.ts_field)
         starttime = pretty_ts(dt_to_ts(ts_to_dt(match_ts) - self.rules['timeframe']), lt)
         endtime = pretty_ts(match_ts, lt)
-        message = 'At least %d events occurred between %s and %s\n\n' % (self.rules['num_events'],
+        message = '%s 至 %s\n\n' % (
                                                                          starttime,
                                                                          endtime)
         return message

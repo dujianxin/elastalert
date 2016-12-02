@@ -921,7 +921,7 @@ class ElastAlerter():
                 else:
                     qk = None
                 start = ts_to_dt(lookup_es_key(match, rule['timestamp_field'])) - rule.get('timeframe', datetime.timedelta(minutes=10))
-                end = ts_to_dt(lookup_es_key(match, rule['timestamp_field'])) + datetime.timedelta(minutes=10)
+                end = ts_to_dt(lookup_es_key(match, rule['timestamp_field']))
                 keys = rule.get('top_count_keys')
                 counts = self.get_top_counts(rule, start, end, keys, qk=qk)
                 match.update(counts)
