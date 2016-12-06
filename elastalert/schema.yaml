@@ -181,6 +181,9 @@ properties:
   smtp_host: {type: string}
   from_addr: {type: string}
 
+  ### WeChat
+  wechat_uri: {type: string}
+
   ### JIRA
   jira_server: {type: string}
   jira_project: {type: string}

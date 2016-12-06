@@ -101,6 +101,7 @@ class ElastAlerter():
         self.notify_email = self.conf.get('notify_email', [])
         self.from_addr = self.conf.get('from_addr', 'ElastAlert')
         self.smtp_host = self.conf.get('smtp_host', 'localhost')
+        self.wechat_uri = self.conf.get('wechat_uri', 'localhost')
         self.max_aggregation = self.conf.get('max_aggregation', 10000)
         self.alerts_sent = 0
         self.num_hits = 0

@@ -46,6 +46,7 @@ rules_mapping = {
 # Used to map names of alerts to their classes
 alerts_mapping = {
     'email': alerts.EmailAlerter,
+    'wechat': alerts.WeChatAlerter,
     'jira': alerts.JiraAlerter,
     'opsgenie': OpsGenieAlerter,
     'debug': alerts.DebugAlerter,
@@ -192,6 +193,9 @@ def load_options(rule, conf, args=None):
         rule.setdefault('smtp_auth_file', conf.get('smtp_auth_file'))
     if 'email_reply_to' in conf:
         rule.setdefault('email_reply_to', conf['email_reply_to'])
+
+    # Set wechat options from global config
+    rule.setdefault('wechat_uri', conf.get('wechat_uri', 'localhost'))
 
     # Set HipChat options from global config
     rule.setdefault('hipchat_msg_color', conf.get('hipchat_msg_color', 'red'))

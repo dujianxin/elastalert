@@ -384,6 +384,36 @@ class EmailAlerter(Alerter):
                 'recipients': self.rule['email']}
 
 
+class WeChatAlerter(Alerter):
+    required_options = frozenset(['wechat'])
+
+    def __init__(self, *args):
+        super(WeChatAlerter, self).__init__(*args)
+
+        self.wechat_uri = self.rule.get('wechat_uri', 'localhost')
+
+        if isinstance(self.rule['wechat'], str):
+            self.rule['wechat'] = [self.rule['wechat']]
+
+    def alert(self, matches):
+        body = self.create_alert_body(matches)
+        recipients = self.rule['wechat']
+
+        data = {
+            "data": {
+                "uuids": recipients,
+                "content": body
+            }
+        }
+
+        requests.post(self.wechat_uri, json=data)
+        elastalert_logger.info("Sent wechat to %s" % (self.rule['wechat']))
+
+    def get_info(self):
+        return {'type': 'wechat',
+                'recipients': self.rule['wechat']}
+
+
 class JiraAlerter(Alerter):
     """ Creates a Jira ticket for each alert """
     required_options = frozenset(['jira_server', 'jira_account_file', 'jira_project', 'jira_issuetype'])
