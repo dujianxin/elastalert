@@ -79,9 +79,7 @@ class BasicMatchString(object):
                 kw[kw_name] = missing if val is None else val
             alert_text = alert_text.format(**kw)
 
-        alert_text.replace('红色', '红色💜')
-        alert_text.replace('黄色', '黄色💛')
-        alert_text.replace('蓝色', '蓝色💙')
+        alert_text = alert_text.replace('红色', '红色💜').replace('黄色', '黄色💛').replace('蓝色', '蓝色💙')
 
         self.text += alert_text
 
