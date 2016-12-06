@@ -114,7 +114,7 @@ class BasicMatchString(object):
                     # Non serializable object, fallback to str
                     pass
             if key == 'kibana_link':
-                self.text += "来自: 👉<a href='%s'>日志查询平台</a>👈\n" % (value_str)
+                self.text += "来自：👉<a href='%s'>日志查询平台</a>👈\n" % (value_str)
             else:
                 self.text += '%s: %s\n' % (key, value_str)
 
