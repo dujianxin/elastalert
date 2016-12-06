@@ -7,6 +7,7 @@ import subprocess
 import sys
 import warnings
 from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from email.utils import formatdate
 from smtplib import SMTP
 from smtplib import SMTP_SSL
@@ -87,7 +88,7 @@ class BasicMatchString(object):
         for key, counts in list(self.match.items()):
             if key.startswith('top_events_'):
                 self.text += '%s: count' % (key[11:])
-                self.text += '\n----------------------------------------\n'
+                self.text += '\n--------------------------\n'
                 top_events = list(counts.items())
 
                 if not top_events:
@@ -113,7 +114,7 @@ class BasicMatchString(object):
                     # Non serializable object, fallback to str
                     pass
             if key == 'kibana_link':
-                self.text += "数据来源: <a href='%s'>日志平台</a>\n" % (value_str)
+                self.text += "来自: 👉<a href='%s'>日志查询平台</a>👈\n" % (value_str)
             else:
                 self.text += '%s: %s\n' % (key, value_str)
 
@@ -334,7 +335,12 @@ class EmailAlerter(Alerter):
             body += '\nJIRA ticket: %s' % (url)
 
         to_addr = self.rule['email']
-        email_msg = MIMEText(body.encode('UTF-8'), _charset='UTF-8')
+
+        html = body.replace('\n', '<br/>')
+        html_part = MIMEText(html, 'html')
+
+        email_msg = MIMEMultipart()
+        email_msg.attach(html_part)
         email_msg['Subject'] = self.create_title(matches)
         email_msg['To'] = ', '.join(self.rule['email'])
         email_msg['From'] = self.from_addr
@@ -399,7 +405,7 @@ class WeChatAlerter(Alerter):
             self.rule['wechat'] = [self.rule['wechat']]
 
     def alert(self, matches):
-        title = self.create_title(matches)
+        title = '🔔' + self.create_title(matches)
         body = self.create_alert_body(matches)
         recipients = self.rule['wechat']
 
