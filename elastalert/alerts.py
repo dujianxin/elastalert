@@ -112,7 +112,10 @@ class BasicMatchString(object):
                 except TypeError:
                     # Non serializable object, fallback to str
                     pass
-            self.text += '%s: %s\n' % (key, value_str)
+            if key == 'kibana_link':
+                self.text += "数据来源: <a href='%s'>日志平台</a>\n" % (value_str)
+            else:
+                self.text += '%s: %s\n' % (key, value_str)
 
     def _pretty_print_as_json(self, blob):
         try:
@@ -396,17 +399,22 @@ class WeChatAlerter(Alerter):
             self.rule['wechat'] = [self.rule['wechat']]
 
     def alert(self, matches):
+        title = self.create_title(matches)
         body = self.create_alert_body(matches)
         recipients = self.rule['wechat']
 
         data = {
             "data": {
                 "uuids": recipients,
-                "content": body
+                "content": title + '\n\n' + body
             }
         }
 
-        requests.post(self.wechat_uri, json=data)
+        try:
+            requests.post(self.wechat_uri, json=data)
+        except requests.exceptions.RequestException as e:
+            raise EAException("request wechat uri failed: %s" % (e))
+
         elastalert_logger.info("Sent wechat to %s" % (self.rule['wechat']))
 
     def get_info(self):
