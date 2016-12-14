@@ -430,9 +430,9 @@ class SpikeRule(RuleType):
         return False
 
     def get_match_str(self, match):
-        message = 'An abnormal number (%d) of events occurred around %s.\n' % (match['spike_count'],
-                                                                               pretty_ts(match[self.rules['timestamp_field']], self.rules.get('use_local_time')))
-        message += 'Preceding that time, there were only %d events within %s\n\n' % (match['reference_count'], self.rules['timeframe'])
+        message = '%s\nChange: %d → %d\n\n' % (
+            pretty_ts(match[self.rules['timestamp_field']], self.rules.get('use_local_time')),
+            match['reference_count'], match['spike_count'])
         return message
 
     def garbage_collect(self, ts):
