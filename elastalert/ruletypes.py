@@ -494,10 +494,9 @@ class FlatlineRule(FrequencyRule):
     def get_match_str(self, match):
         ts = match[self.rules['timestamp_field']]
         lt = self.rules.get('use_local_time')
-        message = 'An abnormally low number of events occurred around %s.\n' % (pretty_ts(ts, lt))
-        message += 'Between %s and %s, there were less than %s events.\n\n' % (pretty_ts(dt_to_ts(ts_to_dt(ts) - self.rules['timeframe']), lt),
-                                                                               pretty_ts(ts, lt),
-                                                                               self.rules['threshold'])
+        starttime = pretty_ts(dt_to_ts(ts_to_dt(ts) - self.rules['timeframe']), lt)
+        endtime = pretty_ts(ts, lt)
+        message = '%s 至 %s\n\n' % (starttime, endtime)
         return message
 
     def garbage_collect(self, ts):

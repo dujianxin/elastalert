@@ -107,7 +107,7 @@ class BasicMatchString(object):
         match_items.sort(key=lambda x: x[0])
         for key, value in match_items:
             if key.startswith('top_events_') or key == '_id' or key == '_index' or key == '_type' or key == '@timestamp' \
-                    or key == 'reference_count' or key == "spike_count":
+                    or key == 'reference_count' or key == 'spike_count' or key == 'count' or key == 'key':
                 continue
             value_str = str(value)
             if type(value) in [list, dict]:
